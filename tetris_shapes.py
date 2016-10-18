@@ -8,9 +8,8 @@ def user_input():
 		xdim = int(input("Enter x dimension: \n"))
 		ydim = int(input("Enter y dimension: \n"))
 	init_plane(xdim, ydim)
-	draw_graphic_plane(xy_plane, xdim, ydim)
-	draw_one()
-	draw_graphic_plane(xy_plane, xdim, ydim)
+	draw_chosen(xdim, ydim)
+	draw_graphic_plane(xy_plane)
 
 def init_plane(xdimension, ydimension):
 	for x in range(xdimension):
@@ -41,7 +40,7 @@ def draw_plane():
 					print("|___|", end="")
 		print("\r")
 
-def draw_graphic_plane(xy_plane, xdim, ydim): #xy_plane is the list of tuples, and xdim & ydim are max dimensions to handle breaks
+def draw_graphic_plane(xy_plane): 
 	current_x_value = 0
 	for coordinate in xy_plane:
 		xcoord, ycoord, bincoord = coordinate
@@ -51,7 +50,7 @@ def draw_graphic_plane(xy_plane, xdim, ydim): #xy_plane is the list of tuples, a
 			if bincoord == 0:
 				print("|‾‾", end="")
 			elif bincoord == 1:
-				print("|\\‾", end="")
+				print("|##", end="")
 		else:
 			if bincoord == 0:
 				print("|‾‾", end="")
@@ -60,13 +59,32 @@ def draw_graphic_plane(xy_plane, xdim, ydim): #xy_plane is the list of tuples, a
 			current_x_value = xcoord
 	print("\n")
 
-def define_shape(shape, xdim, ydim):
-	if shape.lower == "square":
-		draw_square(xdim, ydim) 
 
 def draw_one(): #fills in one grid
 	xy_plane[0] = (0, 0, 1)
 
+def draw_all(): #fills all squares
+	for coordinate in xy_plane:
+		xcoord, ycoord, bcoord = coordinate
+		new_coord = (xcoord, ycoord, 1)
+		coord_index = xy_plane.index((xcoord, ycoord, bcoord))
+		xy_plane.pop(coord_index)
+		xy_plane.insert(coord_index, new_coord)
+
+def draw_chosen(xdim, ydim):
+	xcoord = int(input("Enter the x-value: \n"))
+	ycoord = int(input("Enter the y-value: \n"))
+	while xcoord > xdim and ycoord > ydim:
+		xcoord = int(input("Enter the x-value: \n"))
+		ycoord = int(input("Enter the y-value: \n"))
+	new_coord = (xcoord, ycoord, 1)
+	coord_index = xy_plane.index((xcoord, ycoord, 0))
+	xy_plane.pop(coord_index)
+	xy_plane.insert(coord_index, new_coord)
+
+def define_shape(shape, xdim, ydim):
+	if shape.lower == "square":
+		draw_square(xdim, ydim) 
 
 def draw_square(xdim, ydim):
 	#Left-top edge of the square will be marked with a # to show rotation
