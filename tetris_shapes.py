@@ -8,12 +8,13 @@ def user_input():
 		xdim = int(input("Enter x dimension: \n"))
 		ydim = int(input("Enter y dimension: \n"))
 	init_plane(xdim, ydim)
-	#get_coords()
-	draw_plane()
+	draw_graphic_plane(xy_plane, xdim, ydim)
+	draw_one()
+	draw_graphic_plane(xy_plane, xdim, ydim)
 
 def init_plane(xdimension, ydimension):
-	for x in range(xdimension+1):
-		for y in range(ydimension+1):
+	for x in range(xdimension):
+		for y in range(ydimension):
 			xy_plane.append((x,y,0)) #x,y and whether it is "colored-in"
 
 
@@ -25,9 +26,7 @@ def get_coords():
 
 def draw_plane():
 	#Overscore is here: ‾‾
-	"""Work on how to draw the shapes"""
 	x_limit, y_limit, bin_color = xy_plane[-1]
-	print(x_limit, y_limit)
 	for i in range(2*x_limit):
 		for j in range(y_limit):
 			if j != y_limit-1:
@@ -41,5 +40,36 @@ def draw_plane():
 				elif (i % 2 != 0):
 					print("|___|", end="")
 		print("\r")
+
+def draw_graphic_plane(xy_plane, xdim, ydim): #xy_plane is the list of tuples, and xdim & ydim are max dimensions to handle breaks
+	current_x_value = 0
+	for coordinate in xy_plane:
+		xcoord, ycoord, bincoord = coordinate
+		if xcoord != current_x_value:
+			print("\r")
+			current_x_value = xcoord
+			if bincoord == 0:
+				print("|‾‾", end="")
+			elif bincoord == 1:
+				print("|\\‾", end="")
+		else:
+			if bincoord == 0:
+				print("|‾‾", end="")
+			elif bincoord == 1:
+				print("|##", end="")
+			current_x_value = xcoord
+	print("\n")
+
+def define_shape(shape, xdim, ydim):
+	if shape.lower == "square":
+		draw_square(xdim, ydim) 
+
+def draw_one(): #fills in one grid
+	xy_plane[0] = (0, 0, 1)
+
+
+def draw_square(xdim, ydim):
+	#Left-top edge of the square will be marked with a # to show rotation
+	pass
 
 user_input()
